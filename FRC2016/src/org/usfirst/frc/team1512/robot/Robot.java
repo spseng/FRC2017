@@ -4,6 +4,8 @@ package org.usfirst.frc.team1512.robot;
 
 import edu.wpi.first.wpilibj.SampleRobot;
 import edu.wpi.first.wpilibj.RobotDrive;
+import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -28,6 +30,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Robot extends SampleRobot {
     RobotDrive myRobot;
     Joystick leftstick, rightstick;
+    
+    DoubleSolenoid hook;
     final String defaultAuto = "Default";
     final String customAuto = "My Auto";
     SendableChooser chooser;
@@ -37,6 +41,9 @@ public class Robot extends SampleRobot {
         myRobot.setExpiration(0.1);
         leftstick = new Joystick(0);
         rightstick = new Joystick(1);
+        hook = new DoubleSolenoid(0,1);
+        
+        
     }
     
     public void robotInit() {
@@ -85,6 +92,20 @@ public class Robot extends SampleRobot {
         myRobot.setSafetyEnabled(true);
         while (isOperatorControl() && isEnabled()) {
             myRobot.tankDrive(leftstick, rightstick);
+            if(leftstick.getRawButton(2)==true)
+            {
+            	hook.set(DoubleSolenoid.Value.kForward);
+            }
+            else if(rightstick.getRawButton(2)==true)
+            {
+            	hook.set(DoubleSolenoid.Value.kReverse);
+            }
+            else
+            {
+            	hook.set(DoubleSolenoid.Value.kOff);
+            }
+            
+            
             Timer.delay(0.005);		// wait for a motor update time
         }
     }
