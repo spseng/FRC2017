@@ -42,7 +42,7 @@ public class Robot extends SampleRobot {
         Talon shooter = new Talon(2);
         Talon harvester = new Talon(3);
 
-        leftStick = new Joystick(0);
+        eftStick = new Joystick(0);
         rightStick = new Joystick(1);
     }
 
@@ -57,7 +57,7 @@ public class Robot extends SampleRobot {
      * toggle shooter and harvester.
      */
     public void operatorControl() {
-        c.start();
+        //c.start();
         myRobot.setSafetyEnabled(true);
 
         while (isOperatorControl() && isEnabled()) {
@@ -82,9 +82,41 @@ public class Robot extends SampleRobot {
             harvester.set(0.5);
           }
 
-          myRobot.tankDrive(leftStick, rightStick);
-            Timer.delay(0.005);		// wait for a motor update time
+          //myRobot.tankDrive(leftStick, rightStick);
+          //tank drive program
+          driveTrain(leftStick, rightStick)
+
+          Timer.delay(0.005);		// wait for a motor update time
         }
+    }
+
+    public void driveTrain (Joystick leftStick, Joystick rightstick)
+    {
+      if(leftstick.getY()>0)
+      {
+        jag1.set(-1* leftStick.getY());
+      }
+      else if(leftstick.getY()<0)
+      {
+        jag1.set(-1 * leftStick.getY());
+      }
+      else
+      {
+        jag1.set(0);
+      }
+
+      if(rightstick.getY()>0)
+      {
+        jag2.set(-1 * rightstick.getY());
+      }
+      else if(rightstick.getY()<0)
+      {
+        jag2.set(-1 * rightstick.getY());
+      }
+      else
+      {
+        jag2.set(0);
+      }
     }
 
 }
