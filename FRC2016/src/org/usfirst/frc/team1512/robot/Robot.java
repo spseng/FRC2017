@@ -1,6 +1,4 @@
-
 package org.usfirst.frc.team1512.robot;
-
 
 import edu.wpi.first.wpilibj.SampleRobot;
 import edu.wpi.first.wpilibj.RobotDrive;
@@ -29,7 +27,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Robot extends SampleRobot {
     RobotDrive myRobot;
     Joystick leftstick, rightstick;
-    
+
     DoubleSolenoid hook;
     final String defaultAuto = "Default";
     final String customAuto = "My Auto";
@@ -41,10 +39,10 @@ public class Robot extends SampleRobot {
         leftstick = new Joystick(0);
         rightstick = new Joystick(1);
         hook = new DoubleSolenoid(0,1);
-        
-        
+
+
     }
-    
+
     public void robotInit() {
         chooser = new SendableChooser();
         chooser.addDefault("Default Auto", defaultAuto);
@@ -62,11 +60,11 @@ public class Robot extends SampleRobot {
 	 * If using the SendableChooser make sure to add them to the chooser code above as well.
 	 */
     public void autonomous() {
-    	
+
     	String autoSelected = (String) chooser.getSelected();
 //		String autoSelected = SmartDashboard.getString("Auto Selector", defaultAuto);
 		System.out.println("Auto selected: " + autoSelected);
-    	
+
     	switch(autoSelected) {
     	case customAuto:
             myRobot.setSafetyEnabled(false);
@@ -103,8 +101,8 @@ public class Robot extends SampleRobot {
             {
             	hook.set(DoubleSolenoid.Value.kOff);
             }
-            
-            
+
+
             Timer.delay(0.005);		// wait for a motor update time
         }
     }

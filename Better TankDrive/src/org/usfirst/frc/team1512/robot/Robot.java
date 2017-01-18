@@ -7,9 +7,12 @@ import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.Talon;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
- * This is a demo program showing the use of the RobotDrive class, specifically it 
+ * This is a demo program showing the use of the RobotDrive class, specifically it
  * contains the code necessary to operate a robot with tank drive.
  *
  * The VM is configured to automatically run this class, and to call the
@@ -28,38 +31,58 @@ public class Robot extends SampleRobot {
     Joystick rightStick; // set to ID 2 in DriverStation
     Solenoid Solenoid;
     Compressor c;
+
+
     public Robot() {
-    	c = new Compressor(0);
-    	Solenoid = new Solenoid(0);
+    	  c = new Compressor(0);
+    	  Solenoid = new Solenoid(0);
         myRobot = new RobotDrive(0, 1);
         myRobot.setExpiration(0.1);
-        
-        
+
+        Talon shooter = new Talon(2);
+        Talon harvester = new Talon(3);
+
         leftStick = new Joystick(0);
         rightStick = new Joystick(1);
     }
 
-    
+    public void robotInit() {
+        chooser = new SendableChooser();
+        chooser.addDefault("Default Auto", defaultAuto);
+        chooser.addObject("My Auto", customAuto);
+        SmartDashboard.putData("Auto modes", chooser);
+    }
     /**
-     * Runs the motors with tank steering.
+     * Runs the motors with tank steering and gives user ability to
+     * toggle shooter and harvester.
      */
     public void operatorControl() {
-    	c.start();
+        c.start();
         myRobot.setSafetyEnabled(true);
-      
+
         while (isOperatorControl() && isEnabled()) {
-           
-        	if(leftStick.getRawButton(2))
+
+        	if(leftStick.getRawButton(2) == true)
         	{
         		Solenoid.set(true);
         	}
-        	
+
         	else
         	{
         		Solenoid.set(false);
         	}
-        	
-        	myRobot.tankDrive(leftStick, rightStick);
+
+        	if (leftStick.getRawButton(1) == true)
+          {
+            shooter.set(1.0);
+          }
+
+          if(rightStick.getRawButton(1) == true)
+          {
+            harvester.set(0.5);
+          }
+
+          myRobot.tankDrive(leftStick, rightStick);
             Timer.delay(0.005);		// wait for a motor update time
         }
     }
