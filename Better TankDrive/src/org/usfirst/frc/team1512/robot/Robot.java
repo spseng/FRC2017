@@ -2,8 +2,8 @@ package org.usfirst.frc.team1512.robot;
 
 import edu.wpi.first.wpilibj.SampleRobot;
 import edu.wpi.first.wpilibj.RobotDrive;
-//import edu.wpi.first.wpilibj.Compressor;
-//import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.Talon;
@@ -30,8 +30,8 @@ public class Robot extends SampleRobot {
     Joystick leftStick;  // set to ID 1 in DriverStation
     Joystick rightStick; // set to ID 2 in DriverStation
     //Jaguar jag1, jag2;
-    //Solenoid Solenoid;
-    //Compressor c;
+    Solenoid Solenoid;
+    Compressor c;
 
 
     public Robot() {
@@ -62,10 +62,16 @@ public class Robot extends SampleRobot {
         {
           case customAuto:
 
+          myRobot.setSafetyEnabled(false);
+
 
           break;
 
           case defaultAuto:
+
+          myRobot.setSafetyEnabled(false);
+
+
 
           break;
         }
@@ -93,21 +99,29 @@ public class Robot extends SampleRobot {
           {
             shooter.set(1.0);
           }
+          else
+          {
+            shooter.set(0);
+          }
 
           if(rightStick.getRawButton(1) == true)
           {
             harvester.set(0.5);
           }
+          else
+          {
+            harvester.set(0);
+          }
 
-          //myRobot.tankDrive(leftStick, rightStick);
+          myRobot.tankDrive(leftStick, rightStick);
           //tank drive program
-          driveTrain(leftStick, rightStick, jag1, jag2);
+          //driveTrain(leftStick, rightStick, jag1, jag2);
 
           Timer.delay(0.005);		// wait for a motor update time
         }
     }
 
-    public void driveTrain (Joystick leftStick, Joystick rightstick, Jaguar jag1, Jaguar jag2)
+    /*public void driveTrain (Joystick leftStick, Joystick rightstick, Jaguar jag1, Jaguar jag2)
     {
       if(leftstick.getY()>0)
       {
@@ -134,6 +148,6 @@ public class Robot extends SampleRobot {
       {
         jag2.set(0);
       }
-    }
+    }*/
 
 }
