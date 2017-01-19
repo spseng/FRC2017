@@ -55,6 +55,20 @@ public class Robot extends SampleRobot {
         chooser.addObject("My Auto", customAuto);
         SmartDashboard.putData("Auto modes", chooser);
     }
+
+    public void autonomousInIt()
+    {
+        switch(autoSelected)
+        {
+          case customAuto:
+
+
+          break;
+
+          case defaultAuto:
+
+          break;
+        }
     /**
      * Runs the motors with tank steering and gives user ability to
      * toggle shooter and harvester.
