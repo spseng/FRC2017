@@ -5,10 +5,10 @@ import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.Talon;
-import edu.wpi.first.wpilibj.TalonSRX;
 import edu.wpi.first.wpilibj.Jaguar;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import com.ctre.CANTalon;
 
 /**
  * This is a demo program showing the use of the RobotDrive class, specifically it
@@ -29,10 +29,12 @@ public class Robot extends SampleRobot {
     Joystick leftStick;  // set to ID 1 in DriverStation
     Joystick rightStick; // set to ID 2 in DriverStation
     Jaguar jag1, jag2;
-    Solenoid Solenoid;
-    Compressor c;
-
-
+    Talon shooter, harvester;
+    final String defaultAuto = "default";
+    final String customAuto = "My Auto";
+    SendableChooser chooser;
+    
+    
     public Robot() {
 
         myRobot = new RobotDrive(0, 1);
@@ -40,8 +42,8 @@ public class Robot extends SampleRobot {
 
         jag1 = new Jaguar(0);
         jag2 = new Jaguar(1);
-        Talon shooter = new Talon(2);
-        Talon harvester = new Talon(3);
+        shooter = new Talon(2);
+        harvester = new Talon(3);
 
         leftStick = new Joystick(0);
         rightStick = new Joystick(1);
@@ -56,6 +58,9 @@ public class Robot extends SampleRobot {
 
     public void autonomousInIt()
     {
+    	
+    	String autoSelected = (String) chooser.getSelected();
+    	
         switch(autoSelected)
         {
           case customAuto:
@@ -73,6 +78,7 @@ public class Robot extends SampleRobot {
 
           break;
         }
+      }
     /**
      * Runs the motors with tank steering and gives user ability to
      * toggle shooter and harvester.
