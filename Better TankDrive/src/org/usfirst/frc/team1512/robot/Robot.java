@@ -2,11 +2,10 @@ package org.usfirst.frc.team1512.robot;
 
 import edu.wpi.first.wpilibj.SampleRobot;
 import edu.wpi.first.wpilibj.RobotDrive;
-import edu.wpi.first.wpilibj.Compressor;
-import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.Talon;
+import edu.wpi.first.wpilibj.TalonSRX;
 import edu.wpi.first.wpilibj.Jaguar;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -29,19 +28,18 @@ public class Robot extends SampleRobot {
     RobotDrive myRobot;  // class that handles basic drive operations
     Joystick leftStick;  // set to ID 1 in DriverStation
     Joystick rightStick; // set to ID 2 in DriverStation
-    //Jaguar jag1, jag2;
+    Jaguar jag1, jag2;
     Solenoid Solenoid;
     Compressor c;
 
 
     public Robot() {
-    	  //c = new Compressor(0);
-    	  //Solenoid = new Solenoid(0);
+
         myRobot = new RobotDrive(0, 1);
         myRobot.setExpiration(0.1);
 
-        Jaguar jag1 = new Jaguar(0);
-        Jaguar jag2 = new Jaguar(1);
+        jag1 = new Jaguar(0);
+        jag2 = new Jaguar(1);
         Talon shooter = new Talon(2);
         Talon harvester = new Talon(3);
 
@@ -84,16 +82,6 @@ public class Robot extends SampleRobot {
         myRobot.setSafetyEnabled(true);
 
         while (isOperatorControl() && isEnabled()) {
-
-        	if(leftStick.getRawButton(2) == true)
-        	{
-        		Solenoid.set(true);
-        	}
-
-        	else
-        	{
-        		Solenoid.set(false);
-        	}
 
         	if (leftStick.getRawButton(1) == true)
           {
