@@ -2,11 +2,15 @@ package org.usfirst.frc.team1512.robot;
 
 import edu.wpi.first.wpilibj.SampleRobot;
 import edu.wpi.first.wpilibj.RobotDrive;
+import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.Jaguar;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import com.ctre.CANTalon;
 
 /**
  * This is a demo program showing the use of the RobotDrive class.
@@ -28,13 +32,20 @@ public class Robot extends SampleRobot {
     RobotDrive myRobot;
     Joystick leftstick, rightstick;
 
+    CANTalon talon1;
     DoubleSolenoid hook;
+    Victor vic;
     final String defaultAuto = "Default";
     final String customAuto = "My Auto";
     SendableChooser chooser;
+    
 
     public Robot() {
+    	
+    	vic = new Victor(2);
         myRobot = new RobotDrive(0, 1);
+        talon1 = new CANTalon(1);
+        
         myRobot.setExpiration(0.1);
         leftstick = new Joystick(0);
         rightstick = new Joystick(1);
@@ -48,6 +59,8 @@ public class Robot extends SampleRobot {
         chooser.addDefault("Default Auto", defaultAuto);
         chooser.addObject("My Auto", customAuto);
         SmartDashboard.putData("Auto modes", chooser);
+        
+        
     }
 
 	/**
@@ -86,10 +99,38 @@ public class Robot extends SampleRobot {
      * Runs the motors with arcade steering.
      */
     public void operatorControl() {
+    	
+    	double speedmultiplier=0.85;
         myRobot.setSafetyEnabled(true);
         while (isOperatorControl() && isEnabled()) {
-            myRobot.tankDrive(leftstick, rightstick);
-            if(leftstick.getRawButton(2)==true)
+        	
+        	
+        	SmartDashboard.putNumber("Talon Speed", talon1.getSpeed());
+            myRobot.tankDrive(leftstick.getY()*speedmultiplier, rightstick.getY()*speedmultiplier);
+//            myRobot.tankDrive(leftstick, rightstick);
+            if(leftstick.getRawButton(2))
+            {
+            	vic.set(1);
+            }
+            else if(leftstick.getRawButton(5))
+            {
+            	vic.set(0.25);
+            }
+            else if(!leftstick.getRawButton(2)&&!leftstick.getRawButton(2))
+            {
+            	vic.set(0);
+            }
+            
+            if (rightstick.getRawButton(1))
+            {
+            	talon1.set(speedmultiplier);
+            }
+            else if(!rightstick.getRawButton(1))
+            {
+            	talon1.set(0);
+            }
+            
+            /*if(leftstick.getRawButton(2)==true)
             {
             	hook.set(DoubleSolenoid.Value.kForward);
             }
@@ -102,7 +143,7 @@ public class Robot extends SampleRobot {
             	hook.set(DoubleSolenoid.Value.kOff);
             }
 
-
+*/
             Timer.delay(0.005);		// wait for a motor update time
         }
     }
