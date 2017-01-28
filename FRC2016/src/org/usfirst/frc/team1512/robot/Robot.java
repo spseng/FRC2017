@@ -38,14 +38,14 @@ public class Robot extends SampleRobot {
     final String defaultAuto = "Default";
     final String customAuto = "My Auto";
     SendableChooser chooser;
-    
+
 
     public Robot() {
-    	
+
     	vic = new Victor(2);
         myRobot = new RobotDrive(0, 1);
         talon1 = new CANTalon(1);
-        
+
         myRobot.setExpiration(0.1);
         leftstick = new Joystick(0);
         rightstick = new Joystick(1);
@@ -59,8 +59,8 @@ public class Robot extends SampleRobot {
         chooser.addDefault("Default Auto", defaultAuto);
         chooser.addObject("My Auto", customAuto);
         SmartDashboard.putData("Auto modes", chooser);
-        
-        
+
+
     }
 
 	/**
@@ -99,37 +99,54 @@ public class Robot extends SampleRobot {
      * Runs the motors with arcade steering.
      */
     public void operatorControl() {
-    	
-    	double speedmultiplier=0.85;
+
+    	  double speedmultiplier = 0.85;
         myRobot.setSafetyEnabled(true);
+
+
         while (isOperatorControl() && isEnabled()) {
-        	
-        	
-        	SmartDashboard.putNumber("Talon Speed", talon1.getSpeed());
+
+            //Prints shooter speed to smart dashboard
+            SmartDashboard.putNumber("Talon Speed", talon1.getSpeed());
+
+            //drive system
             myRobot.tankDrive(leftstick.getY()*speedmultiplier, rightstick.getY()*speedmultiplier);
-//            myRobot.tankDrive(leftstick, rightstick);
+
+            //if this button is pushed, lowers the reactivity of the motors
+            //so that driver can be more precise for shooting/harvesting/climbing
+            if(leftstick.getRawButton(4))
+              {
+                speedmultiplier = 0.1;
+              }
+            else
+              {
+                speedmultiplier = 0.85;
+              }
+
+            //controls victor speed controller
             if(leftstick.getRawButton(2))
-            {
-            	vic.set(1);
-            }
+              {
+              	vic.set(1);
+              }
             else if(leftstick.getRawButton(5))
-            {
-            	vic.set(0.25);
-            }
+              {
+              	vic.set(0.25);
+              }
             else if(!leftstick.getRawButton(2)&&!leftstick.getRawButton(2))
-            {
-            	vic.set(0);
-            }
-            
+              {
+              	vic.set(0);
+              }
+
+            //controls shooter
             if (rightstick.getRawButton(1))
-            {
-            	talon1.set(speedmultiplier);
-            }
+              {
+              	talon1.set(0.85);
+              }
             else if(!rightstick.getRawButton(1))
-            {
-            	talon1.set(0);
-            }
-            
+              {
+              	talon1.set(0);
+              }
+
             /*if(leftstick.getRawButton(2)==true)
             {
             	hook.set(DoubleSolenoid.Value.kForward);
