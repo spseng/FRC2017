@@ -187,7 +187,68 @@ public class Robot extends SampleRobot{
             
 
    
+        myRobot.setSafetyEnabled(true);
 
+
+            //Prints shooter speed to smart dashboard
+            SmartDashboard.putNumber("Talon Speed", talon1.getSpeed());
+
+            //drive system
+            myRobot.tankDrive(leftstick.getY()*speedmultiplier, rightstick.getY()*speedmultiplier);
+
+            //if this button is pushed, lowers the reactivity of the motors
+            //so that driver can be more precise for shooting/harvesting/climbing
+            if(leftstick.getRawButton(4))
+              {
+                speedmultiplier = 0.1;
+              }
+            else
+              {
+                speedmultiplier = 0.85;
+              }
+
+            //controls victor speed controller
+            if(leftstick.getRawButton(2))
+              {
+              	vic.set(1);
+              }
+            else if(leftstick.getRawButton(5))
+              {
+              	vic.set(0.25);
+              }
+            else if(!leftstick.getRawButton(2)&&!leftstick.getRawButton(2))
+              {
+              	vic.set(0);
+              }
+
+            //controls shooter
+            if (rightstick.getRawButton(1))
+              {
+              	talon1.set(0.85);
+              }
+            else if(!rightstick.getRawButton(1))
+              {
+              	talon1.set(0);
+              }
+
+
+            /*if(leftstick.getRawButton(2)==true)
+            {
+            	hook.set(DoubleSolenoid.Value.kForward);
+            }
+            else if(rightstick.getRawButton(2)==true)
+            {	
+            	hook.set(DoubleSolenoid.Value.kReverse);
+            }
+            else
+            {
+            	hook.set(DoubleSolenoid.Value.kOff);
+            }
+
+*/
+            Timer.delay(0.005);		// wait for a motor update time
+        }
+    }
     
     
 
