@@ -77,11 +77,13 @@ public class Robot extends SampleRobot{
 						if (leftstick.getRawButton(2))
 							{
 									reverseInt = -1;
+									reverse = true;
 								  speedmultiplier = -1 * 0.85;
 							}
 						else if (rightstick.getRawButton(2))
 							{
 									reverseInt = 1.0;
+									reverse = false;
 								  speedmultiplier = 1 * 0.85;
 							}
 
