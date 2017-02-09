@@ -24,7 +24,8 @@ public class Robot extends SampleRobot{
     XboxController xcontrol;
 //XBOX
     CANTalon talon1;
-    SendableChooser chooser;
+		CANTalon driveLeft;
+		CANTalon driveRight;
 
 
     public Robot() {
@@ -36,7 +37,6 @@ public class Robot extends SampleRobot{
         myRobot.setExpiration(0.1);
         leftstick = new Joystick(0);
         rightstick = new Joystick(1);
-        xcontrol = new XboxController(2);
 
     }
 
@@ -71,21 +71,38 @@ public class Robot extends SampleRobot{
         while (isOperatorControl() && isEnabled()) {
 					double speedmultiplier=0.85;
 					boolean reverse = false;
+					int reverseInt = 1.0;
 					SmartDashboard.putBoolean("Reverse", reverse);
 
 						if (leftstick.getRawButton(2))
 							{
-									reverse = true;
+									reverseInt = -1;
 								  speedmultiplier = -1 * 0.85;
 							}
-						else
+						else if (rightstick.getRawButton(2))
 							{
-									reverse = false;
-								  speedmultiplier = 0.85;
+									reverseInt = 1.0;
+								  speedmultiplier = 1 * 0.85;
 							}
 
 						//drive
-            myRobot.tankDrive(leftstick.getY()*speedmultiplier, rightstick.getY()*speedmultiplier);
+            if (leftstick.getY() > 0.1)
+							{
+									driveLeft.set(reverseInt * leftstick.getY());
+							}
+						else
+							{
+									driveLeft.set(0);
+							}
+
+						if(rightstick.getY() > 0.1)
+							{
+									driveRight.set(reverseInt * rightstick.getY());
+							}
+						else
+							{
+									driveRight.set(0);
+							}
 
 						//shooter
 						if (leftstick.getRawButton(1))
